@@ -18,15 +18,18 @@ type FormValues = {
 };
 
 const Home: NextPage = () => {
-  const { register, handleSubmit } = useForm<FormValues>();
+  const { register, handleSubmit, reset } = useForm<FormValues>();
 
   const [arr, setArr] = useState<string[]>([]);
 
   console.log(arr);
 
   const onSubmit: SubmitHandler<FormValues> = (data) => {
+    if (data.text === "") {
+      return false;
+    }
     setArr((arr) => [...arr, data.text]);
-    // reset(register);
+    reset();
   };
 
   return (
@@ -39,9 +42,15 @@ const Home: NextPage = () => {
 
       <div className="w-9/12 py-24 mx-auto">
         {arr.map((value) => {
-          return <div key={value} className="border-t w-full">
-            value
-          </div>;
+          return (
+            <div key={value} className="border-t w-9/12 mx-auto flex py-3">
+              <h3 className="text-6xl font-bold mx-4">3</h3>
+              <div className="my-2">
+                <p className="text-lg font-bold">あなた</p>
+                <p>{value}</p>
+                </div>
+            </div>
+          );
         })}
         <form onSubmit={handleSubmit(onSubmit)}>
           <textarea
