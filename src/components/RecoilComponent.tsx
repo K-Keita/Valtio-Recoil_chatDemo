@@ -1,14 +1,7 @@
-import type { NextPage } from "next";
-import Head from "next/head";
-import Image from "next/image";
-import { useState } from "react";
 import type { SubmitHandler } from "react-hook-form";
 import { useForm } from "react-hook-form";
-import { Chat } from "src/components/chat";
-import { addText } from "src/hooks/addText";
-import { proxy, useSnapshot } from "valtio";
 import { atom, selector, useRecoilState, useRecoilValue } from "recoil";
-import { deleteText } from "src/hooks/deleteText";
+import { Chat } from "src/components/chat";
 
 type FormValues = {
   text: string;
@@ -60,14 +53,14 @@ export const RecoilComponent = (): JSX.Element => {
   return (
     <>
       <p className="text-2xl">recoil</p>
-      <div className="w-9/12 py-24 mx-auto">
+      <div className="py-24 mx-auto w-9/12">
         {text.map((value, i) => {
           return <Chat key={i} text={value} i={i} delete={deleteText} />;
         })}
         <form onSubmit={handleSubmit(onSubmit)}>
           <textarea
             {...register("text")}
-            className="block border border-black py-2 px-1 my-5 mx-auto w-9/12 bg-white bg-opacity-10"
+            className="block py-2 px-1 my-5 mx-auto w-9/12 bg-white bg-opacity-10 border border-black"
           />
           <button onSubmit={handleSubmit(onSubmit)}>送信</button>
         </form>
