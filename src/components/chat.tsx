@@ -1,3 +1,5 @@
+import { deleteText } from "src/hooks/deleteText";
+
 const d = new Date();
 
 const year = d.getFullYear();
@@ -11,20 +13,17 @@ const nowTime = `${year}年${month}月${date}日 ${hour}:${minute}`;
 type Props = {
   text: string;
   i: number;
+  delete: (i: number) => void;
 };
 
 export const Chat = (props: Props) => {
 
-  // const deleteItem = (i) => {
-
-  // }
-
   return (
-    <div className="border-t w-9/12 group relative mx-auto flex py-4 animate-fade-in">
-      <div className="absolute rounded-md border right-2 group-hover:flex hidden py-1 -top-6 bg-white">
+    <div className="group flex relative py-4 mx-auto w-9/12 border-t animate-fade-in">
+      <div className="hidden group-hover:flex absolute -top-6 right-2 py-1 bg-white rounded-md border">
         <svg
           xmlns="http://www.w3.org/2000/svg"
-          className="h-8 w-8 p-1 mx-1 cursor-pointer hover:bg-gray-100"
+          className="p-1 mx-1 w-8 h-8 hover:bg-gray-100 cursor-pointer"
           fill="none"
           viewBox="0 0 24 24"
           stroke="currentColor"
@@ -38,7 +37,8 @@ export const Chat = (props: Props) => {
         </svg>
         <svg
           xmlns="http://www.w3.org/2000/svg"
-          className="h-8 w-8 p-1 mx-1 cursor-pointer hover:bg-gray-100"
+          className="p-1 mx-1 w-8 h-8 hover:bg-gray-100 cursor-pointer"
+          onClick={() => {return props.delete(props.i)}}
           fill="none"
           viewBox="0 0 24 24"
           stroke="currentColor"
@@ -52,7 +52,7 @@ export const Chat = (props: Props) => {
         </svg>
         <svg
           xmlns="http://www.w3.org/2000/svg"
-          className="h-8 w-8 p-1 mx-1 cursor-pointer hover:bg-gray-100"
+          className="p-1 mx-1 w-8 h-8 hover:bg-gray-100 cursor-pointer"
           fill="none"
           viewBox="0 0 24 24"
           stroke="currentColor"
@@ -65,12 +65,12 @@ export const Chat = (props: Props) => {
           />
         </svg>
       </div>
-      <h3 className="text-6xl font-bold mx-4 -mt-1">3</h3>
+      <h3 className="mx-4 -mt-1 text-6xl font-bold">3</h3>
       <div className="">
         <p className="text-lg font-bold">あなた</p>
         <p className="my-2">{props.text}</p>
       </div>
-      <p className="ml-auto text-gray-500 text-sm">{nowTime}</p>
+      <p className="ml-auto text-sm text-gray-500">{nowTime}</p>
     </div>
   );
 };
