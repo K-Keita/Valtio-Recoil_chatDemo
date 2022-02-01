@@ -1,8 +1,6 @@
 import type { SubmitHandler } from "react-hook-form";
 import { useForm } from "react-hook-form";
 import { Chat } from "src/components/chat";
-import { addText } from "src/hooks/addText";
-import { deleteText } from "src/hooks/deleteText";
 import { proxy, useSnapshot } from "valtio";
 
 // valtio
@@ -10,16 +8,19 @@ export const state = proxy<{ arr: string[] }>({
   arr: ["test1", "test2"],
 });
 
-type FormValues = {
-  text: string;
+// コンポーネントの外部で記述、破壊的メソッドを使える
+const deleteText = (i: number) => {
+  state.arr.splice(i, 1);
+};
+
+const addText = (text: string) => {
+  state.arr.push(text);
 };
 
 export const ValtioComponent = (): JSX.Element => {
-  const { register, handleSubmit, reset } = useForm<FormValues>();
+  const { register, handleSubmit, reset } = useForm<{ text: string }>();
 
-  const { arr } = useSnapshot(state);
-
-  const onSubmit: SubmitHandler<FormValues> = (data) => {
+  const onSubmit: SubmitHandler<{ text: string }> = (data) => {
     if (data.text === "") {
       return false;
     }
@@ -27,9 +28,10 @@ export const ValtioComponent = (): JSX.Element => {
     reset();
   };
 
+  const { arr } = useSnapshot(state);
+
   return (
     <>
-      <p className="text-2xl">valtio</p>
       <div className="py-24 mx-auto w-9/12">
         {arr.map((value, i) => {
           return <Chat key={i} text={value} i={i} delete={deleteText} />;
