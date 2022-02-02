@@ -1,28 +1,16 @@
-import { deleteText } from "src/hooks/deleteText";
-
 type Props = {
-  text: string;
+  arr: {a: string, b: string};
   i: number;
   delete: (i: number) => void;
 };
 
 export const Chat = (props: Props) => {
-  const d = new Date();
-
-  const year = d.getFullYear();
-  const month = d.getMonth() + 1;
-  const date = d.getDate();
-  const hour = d.getHours();
-  const minute = d.getMinutes();
-
-  const nowTime = `${year}年${month}月${date}日 ${hour}:${minute}`;
-
   return (
     <div className="group relative py-4 mx-auto w-9/12 border-t animate-fade-in">
-      <p className="text-right text-sm text-gray-500">{nowTime}</p>
+      <p className="text-right text-sm text-gray-500">{props.arr.b}</p>
       <div className="flex">
         <p className="text-3xl font-bold mx-3">{props.i + 1}</p>
-        <p className="my-2 w-9/12">{props.text}</p>
+        <p className="my-2 w-9/12">{props.arr.a}</p>
         <svg
           xmlns="http://www.w3.org/2000/svg"
           className="p-1 my-1 hidden group-hover:block ml-auto w-8 h-8 hover:bg-gray-100 cursor-pointer border rounded-md"

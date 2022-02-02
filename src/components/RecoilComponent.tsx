@@ -3,10 +3,20 @@ import { useForm } from "react-hook-form";
 import { atom, selector, useRecoilState, useRecoilValue } from "recoil";
 import { Chat } from "src/components/chat";
 
+const d = new Date();
+
+const year = d.getFullYear();
+const month = d.getMonth() + 1;
+const date = d.getDate();
+const hour = d.getHours();
+const minute = d.getMinutes();
+
+const nowTime = `${year}年${month}月${date}日 ${hour}:${minute}`;
+
 //recoil
 export const arrState = atom({
   key: "arrState",
-  default: ["test1", "test2"],
+  default: [{a: "test1", b: nowTime}, {a: "test2", b:nowTime}],
 });
 
 export const charCountState = selector({
@@ -42,7 +52,7 @@ export const RecoilComponent = (): JSX.Element => {
   };
 
   const addText = (text: string) => {
-    const newArr = [...arr, text];
+    const newArr = [...arr, {a: text, b: nowTime}];
     setArr(newArr);
   };
 
@@ -50,7 +60,7 @@ export const RecoilComponent = (): JSX.Element => {
     <>
       <div className="py-24 mx-auto w-9/12">
         {arr.map((value, i) => {
-          return <Chat key={i} text={value} i={i} delete={deleteText} />;
+          return <Chat key={i} arr={value} i={i} delete={deleteText} />;
         })}
         <form onSubmit={handleSubmit(onSubmit)}>
           <textarea
@@ -59,7 +69,6 @@ export const RecoilComponent = (): JSX.Element => {
           />
           <button onSubmit={handleSubmit(onSubmit)}>送信</button>
         </form>
-        {count}
       </div>
     </>
   );

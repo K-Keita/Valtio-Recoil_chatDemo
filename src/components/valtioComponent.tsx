@@ -3,9 +3,22 @@ import { useForm } from "react-hook-form";
 import { Chat } from "src/components/chat";
 import { proxy, useSnapshot } from "valtio";
 
+const d = new Date();
+
+const year = d.getFullYear();
+const month = d.getMonth() + 1;
+const date = d.getDate();
+const hour = d.getHours();
+const minute = d.getMinutes();
+
+const nowTime = `${year}年${month}月${date}日 ${hour}:${minute}`;
+
 // valtio
-export const state = proxy<{ arr: string[] }>({
-  arr: ["test1", "test2"],
+export const state = proxy<{ arr: { a: string; b: string }[] }>({
+  arr: [
+    { a: "test1", b: nowTime },
+    { a: "test2", b: nowTime },
+  ],
 });
 
 // コンポーネントの外部で記述、破壊的メソッドを使える
@@ -14,7 +27,7 @@ const deleteText = (i: number) => {
 };
 
 const addText = (text: string) => {
-  state.arr.push(text);
+  state.arr.push({ a: text, b: nowTime });
 };
 
 export const ValtioComponent = (): JSX.Element => {
@@ -34,7 +47,14 @@ export const ValtioComponent = (): JSX.Element => {
     <>
       <div className="py-24 mx-auto w-9/12">
         {arr.map((value, i) => {
-          return <Chat key={i} text={value} i={i} delete={deleteText} />;
+          return (
+            <Chat
+              key={i}
+              arr={value}
+              i={i}
+              delete={deleteText}
+            />
+          );
         })}
         <form onSubmit={handleSubmit(onSubmit)}>
           <textarea
