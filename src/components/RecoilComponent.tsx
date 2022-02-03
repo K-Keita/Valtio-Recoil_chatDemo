@@ -3,20 +3,13 @@ import { useForm } from "react-hook-form";
 import { atom, selector, useRecoilState, useRecoilValue } from "recoil";
 import { Chat } from "src/components/chat";
 
-const d = new Date();
-
-const year = d.getFullYear();
-const month = d.getMonth() + 1;
-const date = d.getDate();
-const hour = d.getHours();
-const minute = d.getMinutes();
-
-const nowTime = `${year}年${month}月${date}日 ${hour}:${minute}`;
-
 //recoil
 export const arrState = atom({
   key: "arrState",
-  default: [{a: "test1", b: nowTime}, {a: "test2", b:nowTime}],
+  default: [
+    { a: "test1", b: "1/1 11:11" },
+    { a: "test2", b: "1/1 11:11" },
+  ],
 });
 
 export const charCountState = selector({
@@ -43,7 +36,6 @@ export const RecoilComponent = (): JSX.Element => {
 
   // const [状態変数, 状態を変更するための関数] = useRecoilState(atomのkey);
   const [arr, setArr] = useRecoilState(arrState);
-  const count = useRecoilValue(charCountState);
 
   // コンポーネント内部に記述
   const deleteText = (i: number) => {
@@ -52,24 +44,33 @@ export const RecoilComponent = (): JSX.Element => {
   };
 
   const addText = (text: string) => {
-    const newArr = [...arr, {a: text, b: nowTime}];
+    const d = new Date();
+
+    const createdAt = `${
+      d.getMonth() + 1
+    }/${d.getDate()} ${d.getHours()}:${d.getMinutes()}`;
+    const newArr = [...arr, { a: text, b: createdAt }];
     setArr(newArr);
   };
 
   return (
-    <>
-      <div className="py-24 mx-auto w-9/12">
-        {arr.map((value, i) => {
-          return <Chat key={i} arr={value} i={i} delete={deleteText} />;
-        })}
-        <form onSubmit={handleSubmit(onSubmit)}>
-          <textarea
-            {...register("text")}
-            className="block py-2 px-1 my-5 mx-auto w-9/12 bg-white bg-opacity-10 border border-black"
-          />
-          <button onSubmit={handleSubmit(onSubmit)}>送信</button>
-        </form>
-      </div>
-    </>
+    <div className="md:w-1/2 p-5">
+      <p className="text-2xl">Recoil</p>
+      {arr.map((value, i) => {
+        return <Chat key={i} arr={value} i={i} delete={deleteText} />;
+      })}
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <input
+          {...register("text")}
+          className="block p-1 my-3 w-full bg-white bg-opacity-10 border border-gray-500"
+        />
+        <button
+          className="bg-blue-500 px-3 py-1 ml-auto block text-white"
+          onSubmit={handleSubmit(onSubmit)}
+        >
+          送信
+        </button>
+      </form>
+    </div>
   );
 };
