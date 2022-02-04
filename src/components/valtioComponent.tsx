@@ -4,10 +4,10 @@ import { Chat } from "src/components/chat";
 import { proxy, useSnapshot } from "valtio";
 
 // valtio
-export const state = proxy<{ arr: { a: string; b: string }[] }>({
+export const state = proxy<{ arr: { value: string; createdAt: string }[] }>({
   arr: [
-    { a: "test1", b: "1/1 11:11" },
-    { a: "test2", b: "1/1 11:11" },
+    { value: "test1", createdAt: "1/1 11:11" },
+    { value: "test2", createdAt: "2/2 22:22" },
   ],
 });
 
@@ -18,16 +18,15 @@ const deleteText = (i: number) => {
 
 const addText = (text: string) => {
   const d = new Date();
-
   const createdAt = `${
     d.getMonth() + 1
   }/${d.getDate()} ${d.getHours()}:${d.getMinutes()}`;
-  state.arr.push({ a: text, b: createdAt });
+
+  state.arr.push({ value: text, createdAt: createdAt });
 };
 
 export const ValtioComponent = (): JSX.Element => {
   const { register, handleSubmit, reset } = useForm<{ text: string }>();
-
   const onSubmit: SubmitHandler<{ text: string }> = (data) => {
     if (data.text === "") {
       return false;
@@ -36,21 +35,22 @@ export const ValtioComponent = (): JSX.Element => {
     reset();
   };
 
+  // useSnapshotで状態を取得
   const { arr } = useSnapshot(state);
 
   return (
-    <div className="md:w-1/2 p-5">
-      <p className="text-2xl">valtio</p>
+    <div className="p-5 md:w-1/2">
+      <p className="text-3xl font-bold">valtio</p>
       {arr.map((value, i) => {
-        return <Chat key={i} arr={value} i={i} delete={deleteText} />;
+        return <Chat key={i} items={value} i={i} delete={deleteText} />;
       })}
       <form onSubmit={handleSubmit(onSubmit)}>
         <input
           {...register("text")}
-          className="block p-1 my-3 w-full bg-white bg-opacity-10 border border-gray-500"
+          className="block p-1 my-3 w-full bg-white border border-gray-500"
         />
         <button
-          className="bg-blue-500 px-3 py-1 ml-auto block text-white"
+          className="block py-1 px-3 ml-auto text-white bg-blue-500 hover:bg-blue-500/90"
           onSubmit={handleSubmit(onSubmit)}
         >
           送信
