@@ -1,19 +1,19 @@
 type Props = {
-  arr: {a: string, b: string};
   i: number;
+  items: {value: string, createdAt: string};
   delete: (i: number) => void;
 };
 
 export const Chat = (props: Props) => {
   return (
-    <div className="group relative py-4 mx-auto w-9/12 border-t animate-fade-in">
-      <p className="text-right text-sm text-gray-500">{props.arr.b}</p>
+    <div className="group relative py-4 mx-auto w-full border-b animate-fade-in">
+      <p className="text-sm text-right text-gray-500">{props.items.createdAt}</p>
       <div className="flex">
-        <p className="text-3xl font-bold mx-3">{props.i + 1}</p>
-        <p className="my-2 w-9/12">{props.arr.a}</p>
+        <p className="mx-3 text-3xl font-bold">{props.i + 1}</p>
+        <p className="my-2 w-9/12">{props.items.value}</p>
         <svg
           xmlns="http://www.w3.org/2000/svg"
-          className="p-1 my-1 hidden group-hover:block ml-auto w-8 h-8 hover:bg-gray-100 cursor-pointer border rounded-md"
+          className="hidden group-hover:block p-1 my-1 ml-auto w-8 h-8 hover:bg-gray-100 rounded-md border cursor-pointer"
           onClick={() => {
             return props.delete(props.i);
           }}
