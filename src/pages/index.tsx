@@ -1,15 +1,13 @@
 import type { NextPage } from "next";
+import { RecoilRoot } from "recoil";
 import { RecoilComponent } from "src/components/RecoilComponent";
 import { ValtioComponent } from "src/components/valtioComponent";
-import { RecoilRoot } from "recoil";
 
 const Home: NextPage = () => {
   return (
-    <main className="flex">
-      <p className="text-2xl">valtio</p>
+    <main className="p-3 md:flex">
       <ValtioComponent />
       <RecoilRoot>
-        <p className="text-2xl">recoil</p>
         <RecoilComponent />
       </RecoilRoot>
     </main>
