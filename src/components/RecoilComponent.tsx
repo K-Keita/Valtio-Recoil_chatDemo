@@ -4,7 +4,7 @@ import { atom, selector, useRecoilState, useRecoilValue } from "recoil";
 import { Chat } from "src/components/chat";
 
 //recoil
-export const state = atom({
+export const state = atom<{ value: string; createdAt: string }[]>({
   key: "state",
   default: [
     { value: "test1", createdAt: "1/1 11:11" },
